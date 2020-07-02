@@ -118,6 +118,10 @@ module Blazer
     end
   end
 
+  def self.scoping
+    settings["scoping"] || {}
+  end
+
   def self.extract_vars(statement)
     # strip commented out lines
     # and regex {1} or {1,2}
