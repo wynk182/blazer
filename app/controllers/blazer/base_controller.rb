@@ -77,7 +77,7 @@ module Blazer
           elsif query.is_a? Array
             smart_var = query.map { |v| [v, v] }
           elsif query
-            result = smart_var_data_source.run_statement(query)
+            result = smart_var_data_source.run_statement(query, { user: blazer_user })
             smart_var = result.rows.map { |v| v.reverse }
             error = result.error if result.error
           end
