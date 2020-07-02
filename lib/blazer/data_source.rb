@@ -104,7 +104,7 @@ module Blazer
         end
       end
 
-      Blazer.scoping.each do |key, scope|
+      scoping.each do |key, scope|
         next unless statement.include?(key)
 
         value = options[:user].send(scope['method'])
