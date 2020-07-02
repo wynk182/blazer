@@ -104,7 +104,7 @@ module Blazer
       else
         {}
       end
-    end
+    end.freeze
   end
 
   def self.data_sources

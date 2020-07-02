@@ -108,7 +108,7 @@ module Blazer
         next unless statement.include?(key)
 
         value = options[:user].send(scope['method'])
-        clause = scope['clause'].dup
+        clause = scope['clause'].clone
         clause.gsub!("{value}", ActiveRecord::Base.connection.quote(value))
         statement.gsub!("/*scoping:#{key}*/", clause)
       end
