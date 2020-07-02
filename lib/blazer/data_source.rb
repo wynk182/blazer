@@ -109,6 +109,8 @@ module Blazer
 
         value = options[:user].send(scope['method'])
         clause = scope['clause'].clone
+        statement = statement.clone
+
         clause.gsub!("{value}", ActiveRecord::Base.connection.quote(value))
         statement.gsub!("/*scoping:#{key}*/", clause)
       end
