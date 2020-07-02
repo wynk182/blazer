@@ -40,6 +40,7 @@ module Blazer
     attr_accessor :user_name
     attr_writer :user_class
     attr_writer :user_method
+    attr_reader :scoping
     attr_accessor :before_action
     attr_accessor :from_email
     attr_accessor :cache

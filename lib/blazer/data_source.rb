@@ -37,6 +37,10 @@ module Blazer
       settings["variable_defaults"] || {}
     end
 
+    def scoping
+      settings["scoping"] || {}
+    end
+
     def timeout
       settings["timeout"]
     end
@@ -98,6 +102,15 @@ module Blazer
         else
           result = read_cache(statement_cache_key(statement))
         end
+      end
+
+      Blazer.scoping.each do |scope|
+        next unless statement.include?(scope.key)
+
+        value = options[:user].send(scope['method'])
+        clause = scope['clause']
+        clause = clause.gsub!("{value}", ActiveRecord::Base.connection.quote(value))
+        statement = statement.gsub!("/*scoping:company*/", clause)
       end
 
       unless result
