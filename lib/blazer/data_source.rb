@@ -104,13 +104,13 @@ module Blazer
         end
       end
 
-      Blazer.scoping.each do |scope|
-        next unless statement.include?(scope.key)
+      Blazer.scoping.each do |key, scope|
+        next unless statement.include?(key)
 
         value = options[:user].send(scope['method'])
         clause = scope['clause']
         clause = clause.gsub!("{value}", ActiveRecord::Base.connection.quote(value))
-        statement = statement.gsub!("/*scoping:company*/", clause)
+        statement = statement.gsub!("/*scoping:#{key}*/", clause)
       end
 
       unless result
