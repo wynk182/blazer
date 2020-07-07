@@ -147,48 +147,50 @@
         <% elsif @columns == ["PLAN"] && @data_source.adapter == "druid" %>
           <pre><code><%= @rows[0][0] %></code></pre>
         <% else %>
-          <table class="table results-table" style="margin-bottom: 0;">
-            <thead>
-              <tr>
-                <% @columns.each_with_index do |key, i| %>
-                  <% type = @column_types[i] %>
-                  <th style="width: <%= header_width %>%;" data-sort="<%= type %>">
-                    <div style="min-width: <%= @min_width_types.include?(i) ? 180 : 60 %>px;">
-                      <%= key %>
-                    </div>
-                  </th>
-                <% end %>
-              </tr>
-            </thead>
-            <tbody>
-              <% @rows.each do |row| %>
+          <div class="table-responsive-md">
+            <table class="table results-table" style="margin-bottom: 0;">
+              <thead>
                 <tr>
-                  <% row.each_with_index do |v, i| %>
-                    <% k = @columns[i] %>
-                    <td>
-                      <% if v.is_a?(Time) %>
-                        <% v = blazer_time_value(@data_source, k, v) %>
-                      <% end %>
-
-                      <% unless v.nil? %>
-                        <% if v.is_a?(String) && v == "" %>
-                          <div class="text-muted">empty string</div>
-                        <% elsif @linked_columns[k] %>
-                          <%= link_to blazer_format_value(k, v), @linked_columns[k].gsub("{value}", u(v.to_s)), target: "_blank" %>
-                        <% else %>
-                          <%= blazer_format_value(k, v) %>
-                        <% end %>
-                      <% end %>
-
-                      <% if v2 = (@boom[k] || {})[v.nil? ? v : v.to_s] %>
-                        <div class="text-muted"><%= v2 %></div>
-                      <% end %>
-                    </td>
+                  <% @columns.each_with_index do |key, i| %>
+                    <% type = @column_types[i] %>
+                    <th style="width: <%= header_width %>%;" data-sort="<%= type %>">
+                      <div style="min-width: <%= @min_width_types.include?(i) ? 180 : 60 %>px;">
+                        <%= key %>
+                      </div>
+                    </th>
                   <% end %>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% @rows.each do |row| %>
+                  <tr>
+                    <% row.each_with_index do |v, i| %>
+                      <% k = @columns[i] %>
+                      <td>
+                        <% if v.is_a?(Time) %>
+                          <% v = blazer_time_value(@data_source, k, v) %>
+                        <% end %>
+
+                        <% unless v.nil? %>
+                          <% if v.is_a?(String) && v == "" %>
+                            <div class="text-muted">empty string</div>
+                          <% elsif @linked_columns[k] %>
+                            <%= link_to blazer_format_value(k, v), @linked_columns[k].gsub("{value}", u(v.to_s)), target: "_blank" %>
+                          <% else %>
+                            <%= blazer_format_value(k, v) %>
+                          <% end %>
+                        <% end %>
+
+                        <% if v2 = (@boom[k] || {})[v.nil? ? v : v.to_s] %>
+                          <div class="text-muted"><%= v2 %></div>
+                        <% end %>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         <% end %>
       </div>
     <% end %>
